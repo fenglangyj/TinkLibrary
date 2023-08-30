@@ -1,0 +1,52 @@
+{
+  "name": "fenglangyj/tink-library",
+  "license": "MIT",
+  "homepage": "https://fenglangyj.com",
+  "description": "Development Library",
+  "authors": [
+    {
+      "name": "fenglangyj",
+      "email": "fenglangyj@gmail.com"
+    }
+  ],
+  "support": {
+    "email": "fenglangyj@gmail.com",
+    "wiki": "https://fenglangyj.com",
+    "forum": "https://fenglangyj.com",
+    "source": "https://gitee.com/fenglangyj/TinkLibrary",
+    "issues": "https://gitee.com/fenglangyj/TinkLibrary/issues"
+  },
+  "require": {
+    "php": ">=7.4",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "guzzlehttp/guzzle": "^7.4",
+    "telegram-bot/api": "^2.5"
+  },
+  "autoload": {
+    "files": [
+      "src/common.php"
+    ],
+    "psr-4": {
+      "tink\\library\\": "src"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "tink\\library\\tests\\": "tests"
+    }
+  },
+  "extra": {
+
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "config": {
+    "sort-packages": true
+  }
+}

@@ -58,11 +58,11 @@ class TelegramBotService
      * 发送普通消息
      * @return float|int
      */
-    public function sendMessage(int $chatId, string $messageText)
+    public function sendMessage(int $chatId, string $messageText,$parseMode = null)
     {
         try {
             $bot = new \TelegramBot\Api\BotApi($this->BOT_API_TOKEN);
-            $ret = $bot->sendMessage($chatId, $messageText);
+            $ret = $bot->sendMessage($chatId, $messageText,$parseMode);
             $Chat = $ret->getChat();
             return $ret->getMessageId();
         } catch (InvalidArgumentException|\TelegramBot\Api\Exception|\Exception $e) {

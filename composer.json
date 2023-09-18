@@ -23,7 +23,8 @@
     "ext-openssl": "*",
     "ext-mbstring": "*",
     "guzzlehttp/guzzle": "^7.4",
-    "telegram-bot/api": "^2.5"
+    "telegram-bot/api": "^2.5",
+    "ext-redis": "*"
   },
   "autoload": {
     "files": [

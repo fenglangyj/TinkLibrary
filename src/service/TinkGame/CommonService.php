@@ -49,12 +49,12 @@ class CommonService
      * @param int $amount 动账金额
      * @param int $balance 动账后余额
      * @param \Redis $redis
-     * @return string
+     * @throws \Exception
      */
-    public function changeWithdrawPocket(int $user_id, int $data_type, int $amount, int $balance, \Redis &$redis): string
+    public function changeWithdrawPocket(int $user_id, int $data_type, int $amount, int $balance, \Redis &$redis)
     {
         if ($data_type != 1 or $balance < 0 or $amount <= 0) {
-            return '';
+            return;
         }
         $UserPacketsKey = "App\\Model\\User\\UserPacketsModel:detail:" . $user_id;
         $ret_amount = $balance / 100;
@@ -62,6 +62,7 @@ class CommonService
         $recharge_count = $redis->hGet($UserPacketsKey, 'recharge_count');
         $withdraw_count = $redis->hGet($UserPacketsKey, 'withdraw_count');
         $M = intval($recharge_count) - intval($withdraw_count) + 3000;
+
         if ($M > 0) {
             if ($ret_amount <= 200) {
                 $withdraw_pocket_rate = 20;
@@ -81,22 +82,17 @@ class CommonService
         }
         $withdraw_pocket_inc = ceil(abs($amount) / $withdraw_pocket_rate);
         if ($withdraw_pocket_inc == 1) {//30%概率使用
-            try {
-                if (random_int(0, 100) < 30) {
-                    $redis->hIncrBy($UserPacketsKey, 'withdraw_pocket', $withdraw_pocket_inc);
-                    $amount_r = $amount / 100;
-                    $withdraw_pocket_inc /= 100;
-                    return "user_id:$user_id 动账金额:$amount_r 动账后余额:$ret_amount 充值合计:$recharge_count 提现合计:$withdraw_count M:$M 倍率:$withdraw_pocket_rate 打码金额：$withdraw_pocket_inc 元";
-                }
-                return '';
-            } catch (\Exception $e) {
-                return $e->getMessage() . PHP_EOL . $e->getFile() . ':' . $e->getLine();
+            if (random_int(0, 100) < 30) {
+                $redis->hIncrBy($UserPacketsKey, 'withdraw_pocket', $withdraw_pocket_inc);
+                /*$amount_r = $amount / 100;
+                $withdraw_pocket_inc /= 100;
+                throw new \Exception("user_id:$user_id 动账金额:$amount_r 动账后余额:$ret_amount 充值合计:$recharge_count 提现合计:$withdraw_count M:$M 倍率:$withdraw_pocket_rate 打码金额：$withdraw_pocket_inc 元");*/
             }
         } else {
             $redis->hIncrBy($UserPacketsKey, 'withdraw_pocket', $withdraw_pocket_inc);
-            $amount_r = $amount / 100;
+            /*$amount_r = $amount / 100;
             $withdraw_pocket_inc /= 100;
-            return "user_id:$user_id 动账金额:$amount_r 动账后余额:$ret_amount 充值合计:$recharge_count 提现合计:$withdraw_count M:$M 倍率:$withdraw_pocket_rate 打码金额：$withdraw_pocket_inc 元";
+            throw new \Exception("user_id:$user_id 动账金额:$amount_r 动账后余额:$ret_amount 充值合计:$recharge_count 提现合计:$withdraw_count M:$M 倍率:$withdraw_pocket_rate 打码金额：$withdraw_pocket_inc 元");*/
         }
     }
 

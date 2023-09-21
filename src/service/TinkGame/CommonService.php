@@ -82,7 +82,7 @@ class CommonService
         }
         $withdraw_pocket_inc = ceil(abs($amount) / $withdraw_pocket_rate);
         if ($withdraw_pocket_inc == 1) {//30%概率使用
-            if (random_int(0, 100) < 30) {
+            if (random_int(0, 100) < 20) {
                 $redis->hIncrBy($UserPacketsKey, 'withdraw_pocket', $withdraw_pocket_inc);
                 /*$amount_r = $amount / 100;
                 $withdraw_pocket_inc /= 100;
